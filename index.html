@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>PestBuster | One Call, Pests Gone - Modern Cyber-Tech Pest Control Delhi</title>
+    <meta name="description" content="PestBuster provides next-gen futuristic pest control services in Delhi. Termite, Cockroach, Rodent, and Mosquito elimination with high precision. Call 8595946294.">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: Orbitron (Futuristic Header) & Inter (Body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#ff0d38',
+                            darkRed: '#b30021',
+                            glowRed: '#ff3355',
+                            dark: '#08080a',
+                            panel: '#121217',
+                            border: '#2a1219'
+                        }
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Modern Fluid Styling via CSS Variables & clamp() */
+        :root {
+            --fluid-p: clamp(1rem, 3vw, 2.5rem);
+            --fluid-h1: clamp(2rem, 5vw + 1rem, 4.5rem);
+            --fluid-h2: clamp(1.5rem, 3vw + 0.5rem, 2.75rem);
+            --fluid-body: clamp(0.875rem, 1vw + 0.5rem, 1.125rem);
+            --neon-glow: 0 0 20px rgba(255, 13, 56, 0.4), 0 0 40px rgba(255, 13, 56, 0.2);
+            --neon-glow-strong: 0 0 25px rgba(255, 13, 56, 0.8), 0 0 50px rgba(255, 13, 56, 0.4);
+            --glass-bg: rgba(18, 18, 23, 0.75);
+            --glass-border: rgba(255, 13, 56, 0.25);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #08080a;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        .font-cyber {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Responsive typography helpers */
+        .fluid-title { font-size: var(--fluid-h1); }
+        .fluid-heading { font-size: var(--fluid-h2); }
+        .fluid-text { font-size: var(--fluid-body); }
+
+        /* Custom Glassmorphism & Cyber Glow Effects */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(255, 13, 56, 0.6);
+            box-shadow: var(--neon-glow);
+        }
+
+        .neon-text-glow {
+            text-shadow: 0 0 10px rgba(255, 13, 56, 0.7), 0 0 20px rgba(255, 13, 56, 0.4);
+        }
+
+        .neon-border-glow {
+            box-shadow: var(--neon-glow);
+        }
+
+        /* Cyber grid animation background */
+        .cyber-grid-bg {
+            background-image: linear-gradient(to right, rgba(255, 13, 56, 0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 13, 56, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Pulse Radar Scan Line Effect */
+        .radar-scan {
+            position: relative;
+            overflow: hidden;
+        }
+        .radar-scan::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 13, 56, 0.2), transparent);
+            animation: scan 4s infinite linear;
+        }
+
+        @keyframes scan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #08080a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff0d38;
+            border-radius: 4px;
+        }
+
+        /* Form slider styling */
+        input[type=range] {
+            accent-color: #ff0d38;
+        }
+    </style>
+</head>
+<body class="cyber-grid-bg antialiased selection:bg-brand-red selection:text-white">
+
+    <!-- CANVAS BACKGROUND ANIMATION -->
+    <canvas id="cyberCanvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-0 opacity-40"></canvas>
+
+    <div class="relative z-10 flex flex-col min-h-screen">
+
+        <!-- FUTURISTIC HEADER / NAV -->
+        <header class="sticky top-0 z-50 glass-panel border-b border-brand-border/50 px-4 md:px-8 py-3 transition-all duration-300">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                
+                <!-- Brand Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 rounded-lg bg-brand-red/10 border border-brand-red flex items-center justify-center text-brand-red group-hover:bg-brand-red group-hover:text-white transition-all duration-300 shadow-[0_0_15px_rgba(255,13,56,0.3)]">
+                        <i class="fa-solid fa-shield-halved text-xl"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="font-cyber font-black text-xl md:text-2xl tracking-wider text-white flex items-center gap-1">
+                            PEST<span class="text-brand-red">BUSTER</span>
+                        </span>
+                        <span class="text-[9px] font-cyber tracking-widest text-gray-400 uppercase">One Call, Pests Gone</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center gap-8 font-cyber text-xs tracking-widest uppercase">
+                    <a href="#hero" class="text-gray-300 hover:text-brand-red transition-colors">Home</a>
+                    <a href="#services" class="text-gray-300 hover:text-brand-red transition-colors">Services</a>
+                    <a href="#calculator" class="text-gray-300 hover:text-brand-red transition-colors">Estimator</a>
+                    <a href="#process" class="text-gray-300 hover:text-brand-red transition-colors">Tech Process</a>
+                    <a href="#reviews" class="text-gray-300 hover:text-brand-red transition-colors">Reviews</a>
+                </nav>
+
+                <!-- Quick Emergency Call CTA -->
+                <div class="flex items-center gap-3">
+                    <a href="tel:8595946294" class="relative group overflow-hidden rounded-lg p-[1px] font-cyber text-xs uppercase tracking-wider">
+                        <span class="absolute inset-0 bg-gradient-to-r from-brand-red to-red-700 rounded-lg animate-pulse"></span>
+                        <div class="relative px-4 py-2.5 bg-black/90 rounded-lg flex items-center gap-2 group-hover:bg-transparent transition-all">
+                            <i class="fa-solid fa-phone-volume text-brand-red group-hover:text-white animate-bounce"></i>
+                            <span class="hidden sm:inline font-bold text-white">Emergency:</span>
+                            <span class="font-bold text-brand-red group-hover:text-white">8595946294</span>
+                        </div>
+                    </a>
+
+                    <!-- Mobile Menu Toggle Button -->
+                    <button id="menuBtn" class="md:hidden text-white text-2xl p-2 focus:outline-none" aria-label="Toggle Navigation">
+                        <i class="fa-solid fa-bars-staggered text-brand-red"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation Drawer -->
+            <div id="mobileMenu" class="hidden md:hidden glass-panel mt-3 rounded-xl p-5 border border-brand-red/30 flex flex-col gap-4 font-cyber text-sm tracking-wider">
+                <a href="#hero" class="mobile-link text-gray-200 hover:text-brand-red py-1 border-b border-gray-800">Home</a>
+                <a href="#services" class="mobile-link text-gray-200 hover:text-brand-red py-1 border-b border-gray-800">Services</a>
+                <a href="#calculator" class="mobile-link text-gray-200 hover:text-brand-red py-1 border-b border-gray-800">Estimator</a>
+                <a href="#process" class="mobile-link text-gray-200 hover:text-brand-red py-1 border-b border-gray-800">Tech Process</a>
+                <a href="#reviews" class="mobile-link text-gray-200 hover:text-brand-red py-1 border-b border-gray-800">Reviews</a>
+                <a href="#contact" class="mobile-link text-brand-red font-bold py-1">Contact Us</a>
+            </div>
+        </header>
+
+        <!-- HERO SECTION -->
+        <section id="hero" class="relative min-h-[90vh] flex items-center justify-center py-12 px-4 md:px-8 radar-scan">
+            <div class="max-w-6xl mx-auto text-center relative z-10 flex flex-col items-center">
+                
+                <!-- Badge -->
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-brand-red/40 text-brand-red text-xs md:text-sm font-cyber mb-6 tracking-widest uppercase shadow-[0_0_15px_rgba(255,13,56,0.2)]">
+                    <span class="w-2 h-2 rounded-full bg-brand-red animate-ping"></span>
+                    Cyber-Targeted Pest Shield &bull; Delhi NCR
+                </div>
+
+                <!-- Main Heading -->
+                <h1 class="fluid-title font-cyber font-black tracking-wide text-white leading-tight uppercase mb-4">
+                    CYBER-PRECISION <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-red via-red-500 to-white neon-text-glow">PEST ELIMINATION</span>
+                </h1>
+
+                <!-- Tagline & Description -->
+                <p class="fluid-text max-w-2xl text-gray-400 font-light mb-8 leading-relaxed">
+                    Say goodbye to infestation. <strong class="text-white font-medium">PestBuster</strong> utilizes advanced bio-tech barriers & thermal scanning to safeguard homes and commercial zones across Delhi. 
+                    <span class="block text-brand-red font-cyber font-bold mt-2">Tagline: "One Call, Pests Gone"</span>
+                </p>
+
+                <!-- Call to Action Buttons -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+                    <a href="tel:8595946294" class="w-full sm:w-auto px-8 py-4 bg-brand-red text-white font-cyber font-bold text-sm uppercase tracking-widest rounded-xl hover:bg-brand-darkRed transition-all duration-300 shadow-[0_0_25px_rgba(255,13,56,0.6)] flex items-center justify-center gap-3 group">
+                        <i class="fa-solid fa-headset text-lg group-hover:rotate-12 transition-transform"></i>
+                        <span>Call 8595946294 Now</span>
+                    </a>
+                    <a href="#calculator" class="w-full sm:w-auto px-8 py-4 glass-panel text-white font-cyber font-bold text-sm uppercase tracking-widest rounded-xl hover:bg-brand-red/20 border border-brand-red/40 transition-all duration-300 flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-calculator text-brand-red"></i>
+                        <span>Instant Cost Estimator</span>
+                    </a>
+                </div>
+
+                <!-- Stats Bar -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 w-full max-w-4xl mt-16 glass-panel p-6 rounded-2xl border border-brand-border">
+                    <div class="text-center p-2">
+                        <div class="font-cyber font-black text-2xl md:text-4xl text-brand-red mb-1 counter" data-target="15000">0</div>
+                        <div class="text-xs text-gray-400 font-cyber tracking-wider uppercase">Pests Busted</div>
+                    </div>
+                    <div class="text-center p-2">
+                        <div class="font-cyber font-black text-2xl md:text-4xl text-white mb-1 counter" data-target="100">0</div>
+                        <div class="text-xs text-gray-400 font-cyber tracking-wider uppercase">% Safe Bio-Tech</div>
+                    </div>
+                    <div class="text-center p-2">
+                        <div class="font-cyber font-black text-2xl md:text-4xl text-brand-red mb-1 counter" data-target="30">0</div>
+                        <div class="text-xs text-gray-400 font-cyber tracking-wider uppercase">Min Delhi Arrival</div>
+                    </div>
+                    <div class="text-center p-2">
+                        <div class="font-cyber font-black text-2xl md:text-4xl text-white mb-1">4.9/5</div>
+                        <div class="text-xs text-gray-400 font-cyber tracking-wider uppercase">Google Rating</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SERVICES SECTION -->
+        <section id="services" class="py-20 px-4 md:px-8 relative z-10">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16">
+                    <h2 class="fluid-heading font-cyber font-bold text-white uppercase tracking-wider mb-3">
+                        <span class="text-brand-red">//</span> TARGETED ELIMINATION SERVICES
+                    </h2>
+                    <p class="text-gray-400 max-w-xl mx-auto text-sm md:text-base">Customized defense protocols for modern Delhi residences and businesses.</p>
+                </div>
+
+                <!-- Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Service 1 -->
+                    <div class="glass-panel p-6 md:p-8 rounded-2xl relative overflow-hidden group transition-all duration-300">
+                        <div class="w-14 h-14 rounded-xl bg-brand-red/10 border border-brand-red flex items-center justify-center text-brand-red text-2xl mb-6 group-hover:scale-110 group-hover:bg-brand-red group-hover:text-white transition-all">
+                            <i class="fa-solid fa-bug"></i>
+                        </div>
+                        <h3 class="font-cyber font-bold text-xl text-white mb-3">Termite Bio-Barrier</h3>
+                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">Advanced drill-fill-seal subterranean treatment with non-odorous chemicals ensuring up to 5-year wood structure immunity.</p>
+                        <ul class="text-xs text-gray-300 space-y-2 mb-6 font-cyber">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-square-check text-brand-red"></i> Subterranean Infiltration</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-square-check text-brand-red"></i> Odorless Chemical Shield</li>
+                        </ul>
+                        <a href="https://wa.me/918595946294?text=Hi%20PestBuster,%20I%20need%20Termite%20Control%20service." target="_blank" class="inline-flex items-center gap-2 text-xs font-cyber text-brand-red font-bold uppercase tracking-wider group-hover:translate-x-2 transition-transform">
+                            Book Protocol <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <!-- Service 2 -->
+                    <div class="glass-panel p-6 md:p-8 rounded-2xl relative overflow-hidden group transition-all duration-300">
+                        <div class="w-14 h-14 rounded-xl bg-brand-red/10 border border-brand-red flex items-center justify-center text-brand-red text-2xl mb-6 group-hover:scale-110 group-hover:bg-brand-red group-hover:text-white transition-all">
+                            <i class="fa-solid fa-locust"></i>
+                        </div>
+                        <h3 class="font-cyber font-bold text-xl text-white mb-3">Cockroach Eradication</h3>
+                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">Advanced gel baiting and micro-encapsulated spray targeting hidden kitchen nests and drainage clusters effortlessly.</p>
+                        <ul class="text-xs text-gray-300 space-y-2 mb-6 font-cyber">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-square-check text-brand-red"></i> Odorless Gel Applications</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-square-check text-brand-red"></i> 100% Kitchen Safe</li>
+                        </ul>
+                        <a href="https://wa.me/918595946294?text=Hi%20PestBuster,%20I%20need%20Cockroach%20Eradication." target="_blank" class="inline-flex items-center gap-2 text-xs font-cyber text-brand-red font-bold uppercase tracking-wider group-hover:translate-x-2 transition-transform">
+                            Book Protocol <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <!-- Service 3 -->
+                    <div class="glass-panel p-6 md:p-8 rounded-2xl relative overflow-hidden group transition-all duration-300">
+                        <div class="w-14 h-14 rounded-xl bg-brand-red/10 border border-brand-red flex items-center justify-center text-brand-red text-2xl mb-6 group-hover:scale-110 group-hover:bg-brand-red group-hover:text-white transition-all">
+                            <i class="fa-solid fa-mosquito"></i>
+                        </div>
+                        <h3 class="font-cyber font-bold text-xl text-white mb-3">Mosquito & Fly Shield</h3>
+                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">Thermal cold fogging and larvicide treatments to eliminate Dengue & Chikungunya vectors across balconies, gardens, and rooms.</p>
+                        <ul class="text-xs text-gray-300 space-y-2 mb-6 font-cyber">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-square-check text-brand-red"></i> Thermal Fogging Technology</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-square-check text-brand-red"></i> Larva Nest Neutralization</li>
+                        </ul>
+                        <a href="https://wa.me/918595946294?text=Hi%20PestBuster,%20I%20need%20Mosquito%20Shield." target="_blank" class="inline-flex items-center gap-2 text-xs font-cyber text-brand-red font-bold uppercase tracking-wider group-hover:translate-x-2 transition-transform">
+                            Book Protocol <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <!-- Service 4 -->
+                    <div class="glass-panel p-6 md:p-8 rounded-2xl relative overflow-hidden group transition-all duration-300">
+                        <div class="w-14 h-14 rounded-xl bg-brand-red/10 border border-brand-red flex items-center justify-center text-brand-red text-2xl mb-6 group-hover:scale-110 group-hover:bg-brand-red group-hover:text-white transition-all">
+                            <i class="fa-solid fa-staff-snake"></i>
+                        </div>
+                        <h3 class="font-cyber font-bold text-xl text-white mb-3">Rodent Cyber-Trap</h3>
+                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">Strategic tracking, multi-catch stations, and entry point sealing to safeguard cables, electrical fittings, and food storage.</p>
+                        <ul class="text-xs text-gray-300 space-y-2 mb-6 font-cyber">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-square-check text-brand-red"></i> Cable & Wire Defense</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-square-check text-brand-red"></i> Entry Point Proofing</li>
+                        </ul>
+                        <a href="https://wa.me/918595946294?text=Hi%20PestBuster,%20I%20need%20Rodent%20Control." target="_blank" class="inline-flex items-center gap-2 text-xs font-cyber text-brand-red font-bold uppercase tracking-wider group-hover:translate-x-2 transition-transform">
+                            Book Protocol <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <!-- Service 5 -->
+                    <div class="glass-panel p-6 md:p-8 rounded-2xl relative overflow-hidden group transition-all duration-300">
+                        <div class="w-14 h-14 rounded-xl bg-brand-red/10 border border-brand-red flex items-center justify-center text-brand-red text-2xl mb-6 group-hover:scale-110 group-hover:bg-brand-red group-hover:text-white transition-all">
+                            <i class="fa-solid fa-bed"></i>
+                        </div>
+                        <h3 class="font-cyber font-bold text-xl text-white mb-3">Bed Bug Heat & Chemical Cure</h3>
+                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">Two-stage intensive spray extermination ensuring total destruction of bed bugs and their eggs from mattresses and furniture.</p>
+                        <ul class="text-xs text-gray-300 space-y-2 mb-6 font-cyber">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-square-check text-brand-red"></i> Deep Mattress Penetration</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-square-check text-brand-red"></i> Egg-Kill Formula</li>
+                        </ul>
+                        <a href="https://wa.me/918595946294?text=Hi%20PestBuster,%20I%20need%20Bedbug%20Treatment." target="_blank" class="inline-flex items-center gap-2 text-xs font-cyber text-brand-red font-bold uppercase tracking-wider group-hover:translate-x-2 transition-transform">
+                            Book Protocol <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <!-- Service 6 -->
+                    <div class="glass-panel p-6 md:p-8 rounded-2xl relative overflow-hidden group transition-all duration-300">
+                        <div class="w-14 h-14 rounded-xl bg-brand-red/10 border border-brand-red flex items-center justify-center text-brand-red text-2xl mb-6 group-hover:scale-110 group-hover:bg-brand-red group-hover:text-white transition-all">
+                            <i class="fa-solid fa-building-shield"></i>
+                        </div>
+                        <h3 class="font-cyber font-bold text-xl text-white mb-3">Commercial Defense</h3>
+                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">Tailored AMC pest audits and hygiene solutions for corporate offices, warehouses, restaurants, and cloud kitchens in Delhi NCR.</p>
+                        <ul class="text-xs text-gray-300 space-y-2 mb-6 font-cyber">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-square-check text-brand-red"></i> FSSAI Compliant Tech</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-square-check text-brand-red"></i> Periodic AMC Audits</li>
+                        </ul>
+                        <a href="https://wa.me/918595946294?text=Hi%20PestBuster,%20I%20need%20Commercial%20Pest%20Control." target="_blank" class="inline-flex items-center gap-2 text-xs font-cyber text-brand-red font-bold uppercase tracking-wider group-hover:translate-x-2 transition-transform">
+                            Book Protocol <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- INSTANT COST CALCULATOR SECTION -->
+        <section id="calculator" class="py-20 px-4 md:px-8 relative z-10 bg-black/40">
+            <div class="max-w-4xl mx-auto glass-panel p-6 md:p-10 rounded-3xl border border-brand-red/40 shadow-[0_0_30px_rgba(255,13,56,0.15)]">
+                
+                <div class="text-center mb-10">
+                    <span class="text-brand-red font-cyber text-xs uppercase tracking-widest font-bold">// Smart Tech Pricing</span>
+                    <h2 class="fluid-heading font-cyber font-bold text-white uppercase mt-1">Instant Estimate Calculator</h2>
+                    <p class="text-gray-400 text-sm mt-2">Get a quick automated price estimate for your space instantly.</p>
+                </div>
+
+                <div class="space-y-8">
+                    <!-- Property Type Selection -->
+                    <div>
+                        <label class="block font-cyber text-xs uppercase tracking-wider text-gray-300 mb-3">1. Select Property Type</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="propertyTypeContainer">
+                            <button type="button" onclick="setPropType('1BHK', 1)" class="prop-btn active p-3 rounded-xl border border-brand-red bg-brand-red/20 font-cyber text-xs text-white text-center hover:border-brand-red transition-all">1 BHK Flat</button>
+                            <button type="button" onclick="setPropType('2BHK', 1.3)" class="prop-btn p-3 rounded-xl border border-gray-800 bg-black/50 font-cyber text-xs text-gray-400 text-center hover:border-brand-red transition-all">2 BHK Flat</button>
+                            <button type="button" onclick="setPropType('3BHK', 1.7)" class="prop-btn p-3 rounded-xl border border-gray-800 bg-black/50 font-cyber text-xs text-gray-400 text-center hover:border-brand-red transition-all">3 BHK / Villa</button>
+                            <button type="button" onclick="setPropType('Commercial', 2.2)" class="prop-btn p-3 rounded-xl border border-gray-800 bg-black/50 font-cyber text-xs text-gray-400 text-center hover:border-brand-red transition-all">Commercial</button>
+                        </div>
+                    </div>
+
+                    <!-- Area Slider -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2 font-cyber text-xs uppercase">
+                            <label class="text-gray-300">2. Approx Area Size</label>
+                            <span class="text-brand-red font-bold text-sm" id="areaValue">800 Sq Ft</span>
+                        </div>
+                        <input type="range" id="areaSlider" min="300" max="5000" step="100" value="800" oninput="calculateEstimate()" class="w-full h-2 bg-gray-800 rounded-lg appearance-none cursor-pointer">
+                    </div>
+
+                    <!-- Pest Service Selection Checkboxes -->
+                    <div>
+                        <label class="block font-cyber text-xs uppercase tracking-wider text-gray-300 mb-3">3. Target Pests</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <label class="flex items-center gap-2 p-3 rounded-xl border border-gray-800 bg-black/50 cursor-pointer font-cyber text-xs text-gray-300 hover:border-brand-red/50">
+                                <input type="checkbox" checked value="600" onchange="calculateEstimate()" class="pest-check accent-brand-red"> Cockroaches
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-xl border border-gray-800 bg-black/50 cursor-pointer font-cyber text-xs text-gray-300 hover:border-brand-red/50">
+                                <input type="checkbox" value="900" onchange="calculateEstimate()" class="pest-check accent-brand-red"> Termites
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-xl border border-gray-800 bg-black/50 cursor-pointer font-cyber text-xs text-gray-300 hover:border-brand-red/50">
+                                <input type="checkbox" value="700" onchange="calculateEstimate()" class="pest-check accent-brand-red"> Bed Bugs
+                            </label>
+                            <label class="flex items-center gap-2 p-3 rounded-xl border border-gray-800 bg-black/50 cursor-pointer font-cyber text-xs text-gray-300 hover:border-brand-red/50">
+                                <input type="checkbox" value="500" onchange="calculateEstimate()" class="pest-check accent-brand-red"> Rodents
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Output & Action -->
+                    <div class="pt-6 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-6">
+                        <div>
+                            <span class="text-xs font-cyber text-gray-400 block uppercase">Estimated Investment</span>
+                            <span class="font-cyber font-black text-3xl md:text-4xl text-brand-red neon-text-glow" id="totalEstimate">₹ 1,199 - ₹ 1,499</span>
+                            <span class="text-[10px] text-gray-500 block mt-1">*Final quote subject to free physical site inspection</span>
+                        </div>
+
+                        <a id="calcWhatsAppBtn" href="#" target="_blank" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-brand-red to-red-700 text-white font-cyber font-bold text-xs uppercase tracking-widest rounded-xl hover:shadow-[0_0_20px_rgba(255,13,56,0.8)] transition-all text-center flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-lg"></i> Lock This Estimate
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TECH PROCESS TIMELINE -->
+        <section id="process" class="py-20 px-4 md:px-8 relative z-10">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="text-brand-red font-cyber text-xs uppercase tracking-widest font-bold">// 4-Step Action Protocol</span>
+                    <h2 class="fluid-heading font-cyber font-bold text-white uppercase mt-1">How PestBuster Operates</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
+                    
+                    <!-- Step 1 -->
+                    <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-brand-red relative">
+                        <span class="font-cyber font-black text-4xl text-brand-red/30 absolute top-4 right-4">01</span>
+                        <h4 class="font-cyber font-bold text-lg text-white mb-2">Thermal Scan</h4>
+                        <p class="text-gray-400 text-xs leading-relaxed">Our technicians inspect the area with thermal optics to detect hidden nests and moisture pockets.</p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-brand-red relative">
+                        <span class="font-cyber font-black text-4xl text-brand-red/30 absolute top-4 right-4">02</span>
+                        <h4 class="font-cyber font-bold text-lg text-white mb-2">Target Isolation</h4>
+                        <p class="text-gray-400 text-xs leading-relaxed">We select specific odorless, eco-friendly bio-chemicals suitable for family & pet safety.</p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-brand-red relative">
+                        <span class="font-cyber font-black text-4xl text-brand-red/30 absolute top-4 right-4">03</span>
+                        <h4 class="font-cyber font-bold text-lg text-white mb-2">Precision Strike</h4>
+                        <p class="text-gray-400 text-xs leading-relaxed">High-pressure cold fogging and micro-injection gel baiting wipe out pests at the root.</p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-brand-red relative">
+                        <span class="font-cyber font-black text-4xl text-brand-red/30 absolute top-4 right-4">04</span>
+                        <h4 class="font-cyber font-bold text-lg text-white mb-2">Shield Seal</h4>
+                        <p class="text-gray-400 text-xs leading-relaxed">We apply protective anti-infestation seals and issue a written guarantee certificate.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- REVIEWS & TESTIMONIALS -->
+        <section id="reviews" class="py-20 px-4 md:px-8 relative z-10 bg-black/40">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16">
+                    <span class="text-brand-red font-cyber text-xs uppercase tracking-widest font-bold">// Verified Clients</span>
+                    <h2 class="fluid-heading font-cyber font-bold text-white uppercase mt-1">Delhi NCR Client Reviews</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    
+                    <div class="glass-panel p-6 rounded-2xl border border-brand-border">
+                        <div class="flex text-brand-red text-xs mb-3 gap-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-gray-300 text-xs italic mb-4">"PestBuster solved our massive termite issue in Prem Nagar within hours. Non-smelly treatment and very professional behavior!"</p>
+                        <div class="font-cyber text-xs text-white font-bold">Rakesh Sharma</div>
+                        <div class="text-[10px] text-gray-500 font-cyber">Karawal Nagar, Delhi</div>
+                    </div>
+
+                    <div class="glass-panel p-6 rounded-2xl border border-brand-border">
+                        <div class="flex text-brand-red text-xs mb-3 gap-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-gray-300 text-xs italic mb-4">"Called them at 8 AM for kitchen cockroaches. Team arrived in 25 mins. Completely bug-free now. Worth every rupee."</p>
+                        <div class="font-cyber text-xs text-white font-bold">Pooja Verma</div>
+                        <div class="text-[10px] text-gray-500 font-cyber">East Delhi</div>
+                    </div>
+
+                    <div class="glass-panel p-6 rounded-2xl border border-brand-border">
+                        <div class="flex text-brand-red text-xs mb-3 gap-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-gray-300 text-xs italic mb-4">"Great commercial AMC service for our office warehouse. Clean, disciplined staff and clear paperwork."</p>
+                        <div class="font-cyber text-xs text-white font-bold">Amit Gupta</div>
+                        <div class="text-[10px] text-gray-500 font-cyber">Yamuna Vihar, Delhi</div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- EMERGENCY CONTACT & BOOKING SECTION -->
+        <section id="contact" class="py-20 px-4 md:px-8 relative z-10">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    
+                    <!-- Left Column: Contact Details -->
+                    <div>
+                        <span class="text-brand-red font-cyber text-xs uppercase tracking-widest font-bold">// Immediate Dispatch</span>
+                        <h2 class="fluid-heading font-cyber font-bold text-white uppercase mt-2 mb-6">Contact PestBuster HQ</h2>
+                        <p class="text-gray-400 text-sm mb-8">Reach our rapid response team directly. We operate 24/7 across Karawal Nagar, Prem Nagar, and all regions of Delhi NCR.</p>
+
+                        <div class="space-y-6">
+                            
+                            <!-- Phone -->
+                            <a href="tel:8595946294" class="glass-panel p-4 rounded-xl flex items-center gap-4 hover:border-brand-red transition-all">
+                                <div class="w-12 h-12 rounded-lg bg-brand-red/20 border border-brand-red flex items-center justify-center text-brand-red text-xl">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-cyber text-gray-400 uppercase">Emergency Helpline</span>
+                                    <div class="font-cyber font-bold text-lg text-white">8595946294</div>
+                                </div>
+                            </a>
+
+                            <!-- Address -->
+                            <div class="glass-panel p-4 rounded-xl flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-lg bg-brand-red/20 border border-brand-red flex items-center justify-center text-brand-red text-xl">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-cyber text-gray-400 uppercase">Registered HQ Address</span>
+                                    <div class="font-cyber text-sm text-white">333/8B Prem Nagar, Karawal Nagar, Delhi - 110094</div>
+                                </div>
+                            </div>
+
+                            <!-- Tagline Highlight -->
+                            <div class="glass-panel p-4 rounded-xl border border-brand-red/40 bg-brand-red/10">
+                                <div class="text-xs font-cyber text-gray-300">OUR GUARANTEE</div>
+                                <div class="font-cyber font-bold text-brand-red text-base">"One Call, Pests Gone"</div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Interactive Booking Form -->
+                    <div class="glass-panel p-6 md:p-8 rounded-3xl border border-brand-red/40 shadow-[0_0_30px_rgba(255,13,56,0.2)]">
+                        <h3 class="font-cyber font-bold text-xl text-white uppercase mb-2">Book Free Inspection</h3>
+                        <p class="text-gray-400 text-xs mb-6">Fill out the details to request an instant callback from our technician.</p>
+
+                        <form id="bookingForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                            <div>
+                                <label class="block font-cyber text-[10px] uppercase text-gray-300 mb-1">Your Full Name</label>
+                                <input type="text" required placeholder="e.g. Rahul Sharma" class="w-full bg-black/60 border border-gray-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-brand-red font-cyber">
+                            </div>
+
+                            <div>
+                                <label class="block font-cyber text-[10px] uppercase text-gray-300 mb-1">Mobile Number</label>
+                                <input type="tel" required pattern="[0-9]{10}" placeholder="10 Digit Number" class="w-full bg-black/60 border border-gray-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-brand-red font-cyber">
+                            </div>
+
+                            <div>
+                                <label class="block font-cyber text-[10px] uppercase text-gray-300 mb-1">Area / Locality in Delhi</label>
+                                <input type="text" required placeholder="e.g. Karawal Nagar" class="w-full bg-black/60 border border-gray-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-brand-red font-cyber">
+                            </div>
+
+                            <div>
+                                <label class="block font-cyber text-[10px] uppercase text-gray-300 mb-1">Pest Type</label>
+                                <select class="w-full bg-black/60 border border-gray-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-brand-red font-cyber">
+                                    <option>Cockroach Elimination</option>
+                                    <option>Termite Treatment</option>
+                                    <option>Bed Bug Eradication</option>
+                                    <option>Mosquito & Flies Protection</option>
+                                    <option>Rodent Control</option>
+                                    <option>Full Home Deep Pest Control</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="w-full py-4 bg-brand-red hover:bg-brand-darkRed text-white font-cyber font-bold text-xs uppercase tracking-widest rounded-xl transition-all shadow-[0_0_20px_rgba(255,13,56,0.5)]">
+                                Submit Inspection Request
+                            </button>
+                        </form>
+
+                        <!-- Notification Box -->
+                        <div id="formNotification" class="hidden mt-4 p-4 rounded-xl bg-green-900/40 border border-green-500 text-green-300 text-xs font-cyber text-center">
+                            <i class="fa-solid fa-circle-check text-green-400 mr-2"></i> Request Received! Our team will call you back shortly.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="glass-panel border-t border-brand-border py-8 px-4 md:px-8 mt-auto text-center font-cyber text-xs text-gray-500">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+                <div>
+                    <span class="text-white font-bold">PESTBUSTER</span> &bull; 333/8B Prem Nagar, Karawal Nagar, Delhi - 110094
+                </div>
+                <div>
+                    Direct Contact: <a href="tel:8595946294" class="text-brand-red font-bold hover:underline">8595946294</a>
+                </div>
+                <div>
+                    &copy; <span id="year"></span> PestBuster. All Rights Reserved.
+                </div>
+            </div>
+        </footer>
+
+        <!-- FLOATING DIRECT ACTION BUTTONS FOR MOBILE & QUICK ACCESS -->
+        <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+            
+            <!-- WhatsApp Button -->
+            <a href="https://wa.me/918595946294?text=Hi%20PestBuster,%20I%20want%20to%20book%20pest%20control%20service." target="_blank" class="w-14 h-14 rounded-full bg-green-500 text-white flex items-center justify-center text-2xl shadow-[0_0_20px_rgba(34,197,94,0.6)] hover:scale-110 transition-transform">
+                <i class="fa-brands fa-whatsapp"></i>
+            </a>
+
+            <!-- Emergency Call Button -->
+            <a href="tel:8595946294" class="w-14 h-14 rounded-full bg-brand-red text-white flex items-center justify-center text-2xl shadow-[0_0_25px_rgba(255,13,56,0.8)] animate-pulse hover:scale-110 transition-transform">
+                <i class="fa-solid fa-phone"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC & INTERACTION -->
+    <script>
+        // Set dynamic year
+        document.getElementById('year').innerText = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu on click link
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Interactive Price Estimator State
+        let selectedMultiplier = 1;
+
+        function setPropType(type, multiplier) {
+            selectedMultiplier = multiplier;
+            const buttons = document.querySelectorAll('.prop-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('border-brand-red', 'bg-brand-red/20', 'text-white');
+                btn.classList.add('border-gray-800', 'bg-black/50', 'text-gray-400');
+            });
+            event.target.classList.remove('border-gray-800', 'bg-black/50', 'text-gray-400');
+            event.target.classList.add('border-brand-red', 'bg-brand-red/20', 'text-white');
+            calculateEstimate();
+        }
+
+        function calculateEstimate() {
+            const area = parseInt(document.getElementById('areaSlider').value);
+            document.getElementById('areaValue').innerText = area + " Sq Ft";
+
+            let basePestCost = 0;
+            const checkboxes = document.querySelectorAll('.pest-check');
+            checkboxes.forEach(cb => {
+                if(cb.checked) basePestCost += parseInt(cb.value);
+            });
+
+            if(basePestCost === 0) basePestCost = 500; // default minimum
+
+            const areaFactor = area / 800;
+            const totalMin = Math.round((basePestCost * selectedMultiplier * areaFactor));
+            const totalMax = Math.round(totalMin * 1.25);
+
+            document.getElementById('totalEstimate').innerText = `₹ ${totalMin.toLocaleString('en-IN')} - ₹ ${totalMax.toLocaleString('en-IN')}`;
+
+            // Update WhatsApp CTA button link dynamically
+            const whatsappMsg = `Hi PestBuster, I got an estimate of ₹${totalMin} - ₹${totalMax} for ${area} sq ft space on your website. I want to book an inspection.`;
+            document.getElementById('calcWhatsAppBtn').href = `https://wa.me/918595946294?text=${encodeURIComponent(whatsappMsg)}`;
+        }
+
+        // Initial Calculation on Load
+        calculateEstimate();
+
+        // Form Submit Simulation
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const notif = document.getElementById('formNotification');
+            notif.classList.remove('hidden');
+            document.getElementById('bookingForm').reset();
+            setTimeout(() => {
+                notif.classList.add('hidden');
+            }, 6000);
+        }
+
+        // Animated Counters on Scroll
+        const counters = document.querySelectorAll('.counter');
+        let speed = 200;
+
+        const animateCounters = () => {
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const count = +counter.innerText;
+                const inc = target / speed;
+
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + inc);
+                    setTimeout(animateCounters, 20);
+                } else {
+                    counter.innerText = target.toLocaleString('en-IN') + "+";
+                }
+            });
+        }
+
+        // Intersection Observer to trigger counter
+        let observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    animateCounters();
+                    observer.disconnect();
+                }
+            });
+        }, {threshold: 0.5});
+
+        if(counters.length > 0) {
+            observer.observe(counters[0]);
+        }
+
+        // FUTURISTIC CANVAS BACKGROUND (Cyber Grid & Laser Particles)
+        const canvas = document.getElementById('cyberCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.8;
+                this.speedY = (Math.random() - 0.5) * 0.8;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if(this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if(this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = '#ff0d38';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        const particleArray = [];
+        for(let i = 0; i < 45; i++) {
+            particleArray.push(new Particle());
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particleArray.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            // Draw faint connections
+            for(let a = 0; a < particleArray.length; a++) {
+                for(let b = a; b < particleArray.length; b++) {
+                    let dx = particleArray[a].x - particleArray[b].x;
+                    let dy = particleArray[a].y - particleArray[b].y;
+                    let dist = Math.sqrt(dx*dx + dy*dy);
+
+                    if(dist < 100) {
+                        ctx.strokeStyle = `rgba(255, 13, 56, ${1 - dist/100})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particleArray[a].x, particleArray[a].y);
+                        ctx.lineTo(particleArray[b].x, particleArray[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+    </script>
+</body>
+</html>
